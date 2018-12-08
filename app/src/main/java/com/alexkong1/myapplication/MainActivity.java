@@ -12,14 +12,14 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity implements RecordTask.TaskDone {
 
-    private TextView mStart;
-    private TextView stop;
+    private TextView startText;
+    private TextView stopText;
 
     private static final int MY_PERMISSIONS_REQUEST_RECORD_AUDIO = 23945;
     private static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 23946;
 
-    //private final RecordTask task = new RecordTask(this);
-    private RecordAsync task = new RecordAsync(this);
+    //private final RecordTask recordingTask = new RecordTask(this);
+    private RecordAsync recordingTask = new RecordAsync(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,8 +31,8 @@ public class MainActivity extends AppCompatActivity implements RecordTask.TaskDo
     protected void onPostCreate(@android.support.annotation.Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
-        mStart = findViewById(R.id.record);
-        mStart.setOnClickListener(new View.OnClickListener() {
+        startText = findViewById(R.id.record);
+        startText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -72,11 +72,11 @@ public class MainActivity extends AppCompatActivity implements RecordTask.TaskDo
             }
         });
 
-        stop = findViewById(R.id.stop);
-        stop.setOnClickListener(new View.OnClickListener() {
+        stopText = findViewById(R.id.stop);
+        stopText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                task.stopRecording();
+                recordingTask.stopRecording();
             }
         });
     }
@@ -126,11 +126,11 @@ public class MainActivity extends AppCompatActivity implements RecordTask.TaskDo
     }
 
     private void recordAudio() {
-        mStart.setText("RECORDING...");
-        mStart.setClickable(false);
-        stop.setVisibility(View.VISIBLE);
-        if (task.getStatus() == AsyncTask.Status.FINISHED) task = new RecordAsync(this);
-        task.execute();
+        startText.setText("RECORDING...");
+        startText.setClickable(false);
+        stopText.setVisibility(View.VISIBLE);
+        if (recordingTask.getStatus() == AsyncTask.Status.FINISHED) recordingTask = new RecordAsync(this);
+        recordingTask.execute();
     }
 
     @Override
@@ -140,9 +140,9 @@ public class MainActivity extends AppCompatActivity implements RecordTask.TaskDo
 
     @Override
     public void finishTask(boolean isSuccess, String path) {
-        mStart.setText(isSuccess ? "FINISHED...CLICK TO RESTART \n Saved At " + path : "ERROR...TRY AGAIN?");
-        mStart.setClickable(true);
-        stop.setVisibility(View.GONE);
+        startText.setText(isSuccess ? "FINISHED...CLICK TO RESTART \n Saved At " + path : "ERROR...TRY AGAIN?");
+        startText.setClickable(true);
+        stopText.setVisibility(View.GONE);
     }
 
     @Override
@@ -152,8 +152,8 @@ public class MainActivity extends AppCompatActivity implements RecordTask.TaskDo
             @Override
             public void run() {
                 // Stuff that updates the UI
-                if (stop.getVisibility() != View.VISIBLE) stop.setVisibility(View.VISIBLE);
-                mStart.setText("RECORDING..." + timeInMillis);
+                if (stopText.getVisibility() != View.VISIBLE) stopText.setVisibility(View.VISIBLE);
+                startText.setText("RECORDING..." + timeInMillis);
             }
         });
 
