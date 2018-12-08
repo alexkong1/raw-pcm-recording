@@ -10,10 +10,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
+import java.io.File;
+import java.io.IOException;
+
 public class MainActivity extends AppCompatActivity implements RecordTask.TaskDone {
 
     private TextView startText;
     private TextView stopText;
+    private TextView saveText;
 
     private static final int MY_PERMISSIONS_REQUEST_RECORD_AUDIO = 23945;
     private static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 23946;
@@ -79,6 +83,21 @@ public class MainActivity extends AppCompatActivity implements RecordTask.TaskDo
                 recordingTask.stopRecording();
             }
         });
+
+        saveText = findViewById(R.id.save);
+        saveText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    saveText.setText("CONVERTING...");
+                    saveText.setClickable(false);
+                    File convertedWav = Utils.rawToWave();
+                    if (convertedWav != null) saveText.setText("CONVERSION SUCCESSFUL");
+                } catch (IOException e) {
+                    saveText.setText("CONVERSION ERROR");
+                }
+            }
+        });
     }
 
     @Override
@@ -129,6 +148,7 @@ public class MainActivity extends AppCompatActivity implements RecordTask.TaskDo
         startText.setText("RECORDING...");
         startText.setClickable(false);
         stopText.setVisibility(View.VISIBLE);
+        saveText.setVisibility(View.GONE);
         if (recordingTask.getStatus() == AsyncTask.Status.FINISHED) recordingTask = new RecordAsync(this);
         recordingTask.execute();
     }
@@ -143,6 +163,7 @@ public class MainActivity extends AppCompatActivity implements RecordTask.TaskDo
         startText.setText(isSuccess ? "FINISHED...CLICK TO RESTART \n Saved At " + path : "ERROR...TRY AGAIN?");
         startText.setClickable(true);
         stopText.setVisibility(View.GONE);
+        if (isSuccess) saveText.setVisibility(View.VISIBLE);
     }
 
     @Override

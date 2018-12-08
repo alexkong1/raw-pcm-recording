@@ -15,12 +15,12 @@ import java.io.IOException;
 
 public class RecordAsync extends AsyncTask<Void, Void, Boolean> {
 
-    private static final int SAMPLING_RATE = 22050;
+    static final int SAMPLING_RATE = 22050;
     private static final int AUDIO_SOURCE = MediaRecorder.AudioSource.MIC;
     private static final int CHANNEL_IN_CONFIG = AudioFormat.CHANNEL_IN_MONO;
     private static final int AUDIO_FORMAT = AudioFormat.ENCODING_PCM_16BIT;
     private static final int BUFFER_SIZE = AudioRecord.getMinBufferSize(SAMPLING_RATE, CHANNEL_IN_CONFIG, AUDIO_FORMAT);
-    private static final String AUDIO_RECORDING_FILE_NAME = "recording.pcm";
+    static final String AUDIO_RECORDING_FILE_NAME = "recording";
 
     private boolean mStop = false;
     private static final String LOGTAG = "TESTER";
@@ -48,7 +48,7 @@ public class RecordAsync extends AsyncTask<Void, Void, Boolean> {
         recorder.startRecording();
 
         path = Environment.getExternalStorageDirectory().getPath()
-                + "/" + AUDIO_RECORDING_FILE_NAME;
+                + "/" + AUDIO_RECORDING_FILE_NAME + ".pcm";
         BufferedOutputStream os = null;
 
         try {

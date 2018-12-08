@@ -33,4 +33,14 @@
         android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/record" />
 
+    <TextView
+        android:id="@+id/save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="30dp"
+        android:gravity="center_horizontal"
+        android:text="SAVE AS WAV"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/record" />
+
 </android.support.constraint.ConstraintLayout>
