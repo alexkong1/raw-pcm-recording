@@ -1,4 +1,4 @@
-package com.fitivity.myapplication;
+package com.alexkong1.myapplication;
 
 import android.Manifest;
 import android.content.pm.PackageManager;

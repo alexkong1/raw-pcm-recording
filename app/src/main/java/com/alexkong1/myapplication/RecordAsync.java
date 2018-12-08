@@ -1,4 +1,4 @@
-package com.fitivity.myapplication;
+package com.alexkong1.myapplication;
 
 import android.media.AudioFormat;
 import android.media.AudioRecord;
